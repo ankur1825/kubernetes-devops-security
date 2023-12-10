@@ -18,6 +18,7 @@ spec:
       containers:
       - image: replace
         name: devsecops-container
+	securityContext: true
 ---
 apiVersion: v1
 kind: Service
