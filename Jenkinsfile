@@ -1,4 +1,4 @@
-@Library('slack') _
+//@Library('slack') _
 
 pipeline {
   agent any
@@ -140,7 +140,7 @@ pipeline {
             pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
 	          publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'owasp-zap-report', reportFiles: 'zap_report.html', reportName: 'OWASP ZAP HTML Report', reportTitles: 'OWASP ZAP HTML', useWrapperFileDirectly: true])
             // Use sendNotifications.groovy from shared library and provide current build result as parameter    
-            sendNotification currentBuild.result
+            //sendNotification currentBuild.result
         }
     }
 }  
