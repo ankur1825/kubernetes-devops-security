@@ -62,6 +62,7 @@ pipeline {
          }
        }
     }
+  }  
     post { 
         always { 
             junit 'target/surefire-reports/*.xml'
@@ -70,6 +71,5 @@ pipeline {
             pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
         }
     }
-  }
 }  
   
