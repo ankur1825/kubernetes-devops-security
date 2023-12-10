@@ -13,7 +13,6 @@ pipeline {
       stage('Unit Tests') {
             steps {
               sh """
-                export PATH=${M2_HOME}/bin:${PATH}
                 mvn test
               """  
             }
