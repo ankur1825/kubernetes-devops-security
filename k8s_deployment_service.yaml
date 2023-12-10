@@ -15,10 +15,16 @@ spec:
       labels:
         app: devsecops
     spec:
+      volumes:
+      - name: vol
+        emptyDir: {}
       serviceAccountName: default
       containers:
       - image: replace
         name: devsecops-container
+        volumeMounts:
+        - mountPath: /tmp
+          name: vol
         securityContext:
           runAsNonRoot: true
           runAsUser: 100
@@ -38,3 +44,4 @@ spec:
   selector:
     app: devsecops
   type: NodePort
+
