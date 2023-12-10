@@ -9,20 +9,8 @@ pipeline {
                 #archive 'target/*.jar' 
               """  
             }
-        }
+        } 
       stage('Unit Tests') {
-            steps {
-              sh """
-                mvn test
-              """  
-            }
-            post { 
-              always { 
-                junit 'target/surefire-reports/*.xml'
-                jacoco execPattern: 'target/jacoco.exec'
-              }
-            }   
-      /*stage('Unit Tests') {
             steps {
               sh """
                 export PATH=${M2_HOME}/bin:${PATH}
@@ -35,6 +23,6 @@ pipeline {
               jacoco execPattern: 'target/jacoco.exec'
             }
           }
-        }*/  
+        } 
     }
 }  
