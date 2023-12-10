@@ -16,7 +16,12 @@ pipeline {
                 mvn test
               """  
             }
-        }
+            post { 
+              always { 
+                junit 'target/surefire-reports/*.xml'
+                jacoco execPattern: 'target/jacoco.exec'
+              }
+            }   
       /*stage('Unit Tests') {
             steps {
               sh """
@@ -32,4 +37,4 @@ pipeline {
           }
         }*/  
     }
-}
+}  
