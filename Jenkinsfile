@@ -35,6 +35,19 @@ pipeline {
               }
             }
         }
+
+      stage('SonarQube - SAST') {
+            steps {
+              withSonarQubeEnv('SonarQube') {
+                sh "mvn sonar:sonar -Dsonar.projectKey=numeric-application -Dsonar.host.url=http://devops-azure.eastus.cloudapp.azure.com:9000"
+              }
+              timeout(time: 2, unit: 'MINUTES') {
+                script {
+                  waitForQualityGate abortPipeline: true
+                }
+              }
+            }
+      }
     
       stage('Docker build and Push') {
             steps {
