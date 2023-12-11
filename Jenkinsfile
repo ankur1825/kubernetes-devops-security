@@ -1,4 +1,4 @@
-//@Library('slack') _
+@Library('slack') _
 
 pipeline {
   agent any
@@ -158,7 +158,26 @@ pipeline {
 
         }
       }
-    }  
+    }
+
+    stage('K8S Deployment - PROD') {
+      steps {
+        parallel(
+          "Deployment": {
+            withKubeConfig([credentialsId: 'kubeconfig']) {
+              sh "sed -i 's#replace#${imageName}#g' k8s_PROD-deployment_service.yaml"
+              sh "kubectl -n prod apply -f k8s_PROD-deployment_service.yaml"
+            }
+          },
+          "Rollout Status": {
+            withKubeConfig([credentialsId: 'kubeconfig']) {
+              sh "bash k8s-PROD-deployment-rollout-status.sh"
+            }
+          }
+        )
+      }
+    }
+  
   }	  
     post { 
         always { 
@@ -168,7 +187,7 @@ pipeline {
             pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
 	          publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'owasp-zap-report', reportFiles: 'zap_report.html', reportName: 'OWASP ZAP HTML Report', reportTitles: 'OWASP ZAP HTML', useWrapperFileDirectly: true])
             // Use sendNotifications.groovy from shared library and provide current build result as parameter    
-            //sendNotification currentBuild.result
+            sendNotification currentBuild.result
         }
     }
 }  
